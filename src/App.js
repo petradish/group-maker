@@ -18,7 +18,7 @@ class App extends Component {
   constructor (){
     super()
     this.state = {
-      endpoint: "http://school-project-group.herokuapp.com/",
+      endpoint: "http://school-project-group.herokuapp.com",
       showPopup: true,
       name: 'student',
       projects: projects,
