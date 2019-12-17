@@ -2,8 +2,9 @@ import React, {Component} from 'react';
 import Popup from '../src/components/Popup'
 import './App.css';
 import SingleProject from './components/SingleProject';
-import openSocket from "socket.io-client";
-const socket = openSocket("http://school-project-group.herokuapp.com");
+// import openSocket from "socket.io-client";
+// const socket = openSocket("http://school-project-group.herokuapp.com/groups");
+import socket from '../src/socket'
 const projects = [
   { name: 'Morocco', students: [], isFull: false },
   { name: 'Mexico', students: [], isFull: false },

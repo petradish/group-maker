@@ -1,9 +1,8 @@
 const path = require('path');
 const express = require('express');
-const morgan = require('morgan');
 const bodyParser = require('body-parser');
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 const app = express();
 const server = require('http').createServer(app)
 
@@ -17,10 +16,6 @@ require('./socket')(io);
 
 module.exports = app;
 
-
-
-// logging middleware
-app.use(morgan('dev'));
 
 // static middleware
 app.use(express.static(path.join(__dirname, '..', 'node_modules')));
