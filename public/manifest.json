@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Pick Your Topic",
+  "name": "Group Project Topic Picker",
   "icons": [
     {
       "src": "favicon.ico",
