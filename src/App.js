@@ -4,23 +4,16 @@ import Popup from '../src/components/Popup'
 import './App.css';
 // import io from 'socket.io-client'
 import SingleProject from './components/SingleProject';
+import {getAllProjects, selectProject, getProject} from './store'
 // const socket = io()
-
 // import socket from '../src/socket'
-const projects = [
-  { name: 'Morocco', students: [], isFull: false },
-  { name: 'Mexico', students: [], isFull: false },
-  { name: 'Ecuador', students: [], isFull: false },
-  { name: 'Brazil', students: [], isFull: false },
-  { name: 'Bangladesh', students: [], isFull: false },
-  { name: 'Colombia', students: [], isFull: false }
-];
 
 
 class App extends Component {
   constructor (){
     super()
     this.state = {
+      isSelected: false,
       showPopup: true,
       name: 'student',
     }
@@ -32,41 +25,57 @@ class App extends Component {
       showPopup: !this.state.showPopup
     });
   }
-  handleSelect(student, project, key){
-    if (this.state.projects[key].students.length < 4){
-      socket.emit('select-project', {
-        student: student,
-        project: project,
-        key: key
-      })
-      alert(`You chose well! Let's see who else joins your group on ${project}`)
+
+  handleSelect(id, numStudents, name){
+    if (numStudents < 4) {
+      console.log(id, this.state.name)
+      this.props.chooseProject({id: id, name: this.state.name})
+      alert(`You chose well! Let's see who else joins your group on ${name}`)
       this.setState({
-        isSelected: true
+          isSelected: true
       })
     } else {
       alert('The group is now full! Choose another!')
     }
-}
+  }
+//   handleSelect(student, project, key){
+//     if (this.state.projects[key].students.length < 4){
+//       socket.emit('select-project', {
+//         student: student,
+//         project: project,
+//         key: key
+//       })
+//       alert(`You chose well! Let's see who else joins your group on ${project}`)
+//       this.setState({
+//         isSelected: true
+//       })
+//     } else {
+//       alert('The group is now full! Choose another!')
+//     }
+// }
   componentDidUpdate(prevProps, prevState){
-      if (prevState.name !== sessionStorage.getItem('name'))
+      if (prevState.name !== sessionStorage.getItem('name')){
           this.setState({
           name: sessionStorage.getItem('name')
       })
+    }
   }
+
   componentDidMount(){
-    socket.on('select-project', (data) => {
-       if (this.state.projects[data.key].students.length < 4){
-        console.log(`${data.project} was chosen by ${data.student}`)
-        this.setState({
-          projects: [...this.state.projects, projects[data.key].students.push(data.student)].slice(0,6)
+    this.props.getProjects()
+    // this.props.selectProject();
+    // socket.on('select-project', (data) => {
+    //    if (this.state.projects[data.key].students.length < 4){
+    //     console.log(`${data.project} was chosen by ${data.student}`)
+    //     this.setState({
+    //       projects: [...this.state.projects, projects[data.key].students.push(data.student)].slice(0,6)
     
-        })
-      }
-    })
+    //     })
+    //   }
+    // })
    }
   
 render() { 
-
   return (
     <React.Fragment>
     {this.state.showPopup ?
@@ -78,19 +87,23 @@ render() {
     }  
     
     <div className="App">
-      {this.state.projects.map((project, i) => {
-        return <SingleProject key={i} idx={i} student={this.state.name} name={project.name} group={project.students} isSelected={this.state.isSelected} handleSelect={this.handleSelect} isFull={project.isFull}/>
-      })}
+      {this.props.projects.length ? this.props.projects.map((project) => {
+        return <SingleProject key={project.id} id={project.id} student={this.state.name} users={project.users} name={project.name} numStudents={project.numStudents} isSelected={this.state.isSelected} selectProject={this.handleSelect}/>
+      })
+    : 'Loading Project Name' }
     </div>
     </React.Fragment>
   );
 }
 }
 
-const mapStateToProps = {
-  projects: projects
-}
-const mapDispatchToProps = function (dispatch) {
- 
-};
+const mapStateToProps = state => ({
+  name: state.name,
+  projects: state.project
+})
+const mapDispatchToProps = dispatch => ({
+  getProjects: () => dispatch(getAllProjects()),
+  getProjectUsers:(projectId) => dispatch(getProject(projectId)),
+  chooseProject: (project) => dispatch(selectProject(project))
+})
 export default connect(mapStateToProps, mapDispatchToProps)(App);

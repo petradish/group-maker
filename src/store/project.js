@@ -2,7 +2,8 @@ import axios from 'axios'
 import socket from '../socket';
 // ACTION TYPES
 
-import {SET_PROJECT, GET_PROJECT} from './index'
+import {SET_PROJECT, GET_PROJECT, GET_ALL_PROJECTS} from './index'
+
 // ACTION CREATORS
 
 
@@ -14,12 +15,15 @@ export function gotProject (project) {
   const action = { type: GET_PROJECT, project };
   return action;
 }
-
+export function gotAllProjects (projects) {
+    const action = { type: GET_ALL_PROJECTS, projects };
+    return action;
+  }
 //thunks
-export const getProject = () => {
+export const getProject = (projectId) => {
   return async dispatch => {
     try {
-      const { data } = await axios.get('/api');
+      const { data } = await axios.get(`/api`);
       //will return the array of students set on projects
       dispatch(gotProject(data));
     } catch (err) {
@@ -27,17 +31,26 @@ export const getProject = () => {
     }
   };
 };
-
+export const getAllProjects = () => {
+    return async dispatch => {
+      try {
+        const { data } = await axios.get('/api/projects');
+        //will return the array of students set on projects
+        dispatch(gotAllProjects(data));
+      } catch (err) {
+        console.error(err);
+      }
+    };
+  };
 export const selectProject = (project) => {
   return async dispatch => {
-    const response = await axios.post('/api', project);
-    const data = response.data;
-    dispatch(setProject(data));
-    socket.emit('select-project', data);
+      const { data } = await axios.post(`/api/projects/select`, project);
+      dispatch(setProject(data));
+      // socket.emit('select-project', data);
   };
 };
 // REDUCER
-export default function project (state = {}, action) {
+export default function project (state = [], action) {
 
   switch (action.type) {
 
@@ -45,7 +58,8 @@ export default function project (state = {}, action) {
       return action.project;
     case GET_PROJECT:
       return action.project;
-
+    case GET_ALL_PROJECTS:
+      return action.projects;
     default:
       return state;
   }
