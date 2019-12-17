@@ -1,6 +1,6 @@
 const db = require('./db');
 
 // register models
-require('./models/user.js/index.js');
+require('./models/index.js');
 
 module.exports = db;

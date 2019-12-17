@@ -7,6 +7,7 @@ const Project = db.define('project', {
   },
   numStudents: {
       type: Sequelize.INTEGER,
+      defaultValue: 0,
       validate: {
           max: 4
       }

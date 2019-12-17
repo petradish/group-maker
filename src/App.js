@@ -2,9 +2,9 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux'
 import Popup from '../src/components/Popup'
 import './App.css';
-import io from 'socket.io-client'
+// import io from 'socket.io-client'
 import SingleProject from './components/SingleProject';
-const socket = io()
+// const socket = io()
 
 // import socket from '../src/socket'
 const projects = [
@@ -23,8 +23,6 @@ class App extends Component {
     this.state = {
       showPopup: true,
       name: 'student',
-      projects: projects,
-      isSelected: false
     }
     this.togglePopup = this.togglePopup.bind(this)
     this.handleSelect = this.handleSelect.bind(this)
@@ -90,7 +88,7 @@ render() {
 }
 
 const mapStateToProps = {
-  
+  projects: projects
 }
 const mapDispatchToProps = function (dispatch) {
  
