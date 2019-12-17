@@ -1,34 +1,32 @@
-import {
-    createStore,
-  } from 'redux';
-// ACTION TYPES
+import {createStore, applyMiddleware, combineReducers} from 'redux';
+import name from './name';
+import project, { getAllProjects } from './project';
+import thunkMiddleware from 'redux-thunk'
+import { createLogger } from 'redux-logger';
+import socket from '../socket';
 
-const UPDATE_NAME = 'UPDATE_NAME';
+export const UPDATE_NAME = 'UPDATE_NAME';
+export const SET_PROJECT = 'SET_PROJECT';
+export const GET_PROJECT = 'GET_PROJECT';
+export const GET_ALL_PROJECTS = 'GET_ALL_PROJECTS'
 
-// ACTION CREATORS
+socket.on('select-project', () => {
+  store.dispatch(getAllProjects());
+});
 
-export function updateName (name) {
-  const action = { type: UPDATE_NAME, name };
-  sessionStorage.setItem('name', name)
-  return action;
-}
+const rootReducer = combineReducers({
+  name,
+  project,
+})
 
-// REDUCER
-function reducer (state = 'student', action) {
-
-  switch (action.type) {
-
-    case UPDATE_NAME:
-      return action.name;
-
-    default:
-      return state;
-  }
-
-}
+const middleware = 
+  applyMiddleware(thunkMiddleware, createLogger({ collapsed: true })
+);
 
 const store = createStore(
-    reducer
+    rootReducer, middleware
   );
   
-  export default store;
+export default store;
+export * from './name';
+export * from './project';
