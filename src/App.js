@@ -2,8 +2,8 @@ import React, {Component} from 'react';
 import Popup from '../src/components/Popup'
 import './App.css';
 import SingleProject from './components/SingleProject';
-import socketIOClient from "socket.io-client";
-
+import openSocket from "socket.io-client";
+const socket = openSocket("http://school-project-group.herokuapp.com");
 const projects = [
   { name: 'Morocco', students: [], isFull: false },
   { name: 'Mexico', students: [], isFull: false },
@@ -18,7 +18,6 @@ class App extends Component {
   constructor (){
     super()
     this.state = {
-      endpoint: "http://school-project-group.herokuapp.com",
       showPopup: true,
       name: 'student',
       projects: projects,
@@ -34,7 +33,6 @@ class App extends Component {
   }
   handleSelect(student, project, key){
     if (this.state.projects[key].students.length < 4){
-      const socket = socketIOClient(this.state.endpoint);
       socket.emit('select-project', {
         student: student,
         project: project,
@@ -55,7 +53,6 @@ class App extends Component {
       })
   }
   componentDidMount(){
-    const socket = socketIOClient(this.state.endpoint);
     socket.on('select-project', (data) => {
        if (this.state.projects[data.key].students.length < 4){
         console.log(`${data.project} was chosen by ${data.student}`)
