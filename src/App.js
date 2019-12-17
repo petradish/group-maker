@@ -1,9 +1,11 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux'
 import Popup from '../src/components/Popup'
 import './App.css';
 import io from 'socket.io-client'
 import SingleProject from './components/SingleProject';
 const socket = io()
+
 // import socket from '../src/socket'
 const projects = [
   { name: 'Morocco', students: [], isFull: false },
@@ -86,4 +88,11 @@ render() {
   );
 }
 }
-export default App;
+
+const mapStateToProps = {
+  
+}
+const mapDispatchToProps = function (dispatch) {
+ 
+};
+export default connect(mapStateToProps, mapDispatchToProps)(App);
