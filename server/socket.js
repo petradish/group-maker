@@ -5,7 +5,7 @@ module.exports = io => {
       );
       
       socket.on('select-project', (data) => {
-        socket.broadcast.emit('select-project', data);
+        socket.emit('select-project', data);
       });
 
       socket.on('disconnect', () => {
