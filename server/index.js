@@ -6,6 +6,7 @@ const morgan = require('morgan');
 const PORT = process.env.PORT || 5000;
 const app = express();
 const server = require('http').createServer(app)
+const cors = require('cors')
 
 app.listen(PORT, () => console.log(`Connected on port ${PORT}`));
 
@@ -20,6 +21,7 @@ module.exports = app;
 db.sync().then(() => console.log('Database is synced'));
 // logging middleware
 app.use(morgan('dev'));
+app.use(cors())
 // static middleware
 app.use(express.static(path.join(__dirname, '..', 'node_modules')));
 app.use(express.static(path.join(__dirname, '..', 'public')));
