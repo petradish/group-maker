@@ -28,7 +28,6 @@ class App extends Component {
 
   handleSelect(id, numStudents, name){
     if (numStudents < 4) {
-      console.log(id, this.state.name)
       this.props.chooseProject({id: id, name: this.state.name})
       socket.emit('select-project', {name: this.state.name, project: name})
       alert(`You chose well! Let's see who else joins your group on ${name}`)
