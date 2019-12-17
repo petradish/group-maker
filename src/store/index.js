@@ -1,18 +1,17 @@
 import {createStore, applyMiddleware, combineReducers} from 'redux';
 import name from './name';
-import project from './project';
+import project, { getAllProjects } from './project';
 import thunkMiddleware from 'redux-thunk'
 import { createLogger } from 'redux-logger';
 import socket from '../socket';
-import {selectProject} from '../store/project'
 
 export const UPDATE_NAME = 'UPDATE_NAME';
 export const SET_PROJECT = 'SET_PROJECT';
 export const GET_PROJECT = 'GET_PROJECT';
 export const GET_ALL_PROJECTS = 'GET_ALL_PROJECTS'
 
-socket.on('select-project', project => {
-  store.dispatch(selectProject(project));
+socket.on('select-project', () => {
+  store.dispatch(getAllProjects());
 });
 
 const rootReducer = combineReducers({

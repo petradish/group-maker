@@ -6,7 +6,7 @@ import './App.css';
 import SingleProject from './components/SingleProject';
 import {getAllProjects, selectProject, getProject} from './store'
 // const socket = io()
-// import socket from '../src/socket'
+import socket from '../src/socket'
 
 
 class App extends Component {
@@ -30,6 +30,7 @@ class App extends Component {
     if (numStudents < 4) {
       console.log(id, this.state.name)
       this.props.chooseProject({id: id, name: this.state.name})
+      socket.emit('select-project', {name: this.state.name, project: name})
       alert(`You chose well! Let's see who else joins your group on ${name}`)
       this.setState({
           isSelected: true
@@ -63,17 +64,10 @@ class App extends Component {
 
   componentDidMount(){
     this.props.getProjects()
-    // this.props.selectProject();
-    // socket.on('select-project', (data) => {
-    //    if (this.state.projects[data.key].students.length < 4){
-    //     console.log(`${data.project} was chosen by ${data.student}`)
-    //     this.setState({
-    //       projects: [...this.state.projects, projects[data.key].students.push(data.student)].slice(0,6)
-    
-    //     })
-    //   }
-    // })
-   }
+    socket.on('select-project', (data) => {
+       console.log(`${data.project} was chosen by ${data.name}`)
+   })
+  }
   
 render() { 
   return (
