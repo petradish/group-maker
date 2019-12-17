@@ -2,11 +2,11 @@ const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 5000;
 const app = express();
-const server = require('http').createServer(app)
+// const server = require('http').createServer(app)
 
-server.listen(PORT, () => console.log(`Connected on port ${PORT}`));
+const server = app.listen(PORT, () => console.log(`Connected on port ${PORT}`));
 
 const socketio = require('socket.io');
 
