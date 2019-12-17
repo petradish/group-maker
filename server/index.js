@@ -5,9 +5,9 @@ const db = require('./db/db');
 const morgan = require('morgan');
 const PORT = process.env.PORT || 5000;
 const app = express();
-// const server = require('http').createServer(app)
+const server = require('http').createServer(app)
 
-const server = app.listen(PORT, () => console.log(`Connected on port ${PORT}`));
+app.listen(PORT, () => console.log(`Connected on port ${PORT}`));
 
 const socketio = require('socket.io');
 
