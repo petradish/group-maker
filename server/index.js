@@ -5,10 +5,10 @@ const db = require('./db/db');
 const morgan = require('morgan');
 const PORT = process.env.PORT || 5000;
 const app = express();
-// const server = require('http').createServer(app)
-// const cors = require('cors')
+const server = require('http').createServer(app)
+const cors = require('cors')
 
-const server = app.listen(PORT, () => console.log(`Connected on port ${PORT}`));
+server.listen(PORT, () => console.log(`Connected on port ${PORT}`));
 
 const socketio = require('socket.io');
 
@@ -21,7 +21,7 @@ module.exports = app;
 db.sync().then(() => console.log('Database is synced'));
 // logging middleware
 app.use(morgan('dev'));
-// app.use(cors())
+app.use(cors())
 // static middleware
 app.use(express.static(path.join(__dirname, '..', 'node_modules')));
 app.use(express.static(path.join(__dirname, '..', 'public')));
